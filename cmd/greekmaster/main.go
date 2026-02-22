@@ -22,7 +22,7 @@ tables to instinctive application of cases in real sentence contexts.`,
 func init() {
 	// Register commands
 	rootCmd.AddCommand(commands.NewImportCmd())
-	// rootCmd.AddCommand(commands.NewPracticeCmd())
+	rootCmd.AddCommand(commands.NewPracticeCmd())
 	// rootCmd.AddCommand(commands.NewAddCmd())
 	// rootCmd.AddCommand(commands.NewListCmd())
 }

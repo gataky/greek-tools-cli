@@ -132,32 +132,32 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 4.9 Display completion summary showing total nouns imported and total sentences generated
   - [x] 4.10 Create `internal/commands/import.go` with Cobra command definition that calls ImportProcessor
 
-- [ ] 5.0 Implement practice TUI with Bubble Tea
-  - [ ] 5.1 Create `internal/tui/setup.go` with SetupModel Bubble Tea model for session configuration
-  - [ ] 5.2 Implement setup screens that prompt for:
-    - Difficulty level selection (Beginner/Intermediate/Advanced) using arrow keys
+- [x] 5.0 Implement practice TUI with Bubble Tea
+  - [x] 5.1 Create `internal/tui/setup.go` with SetupModel Bubble Tea model for session configuration
+  - [x] 5.2 Implement setup screens that prompt for:
+    - Difficulty level selection (Beginner/Intermediate/Advanced) using number keys (1/2/3)
     - Plural inclusion toggle (Y/n)
     - Session type selection (Quick 10/Standard 25/Long 50/Endless)
-  - [ ] 5.3 Parse user selections and create SessionConfig struct
-  - [ ] 5.4 Create `internal/tui/practice.go` with PracticeModel Bubble Tea model that holds SessionConfig, current sentence, user input, question counter, correct answer count
-  - [ ] 5.5 Implement Init() method that queries sentences from database based on SessionConfig (filter by difficulty_phase and number), shuffles results, and stores in model
-  - [ ] 5.6 Implement Update() method to handle:
+  - [x] 5.3 Parse user selections and create SessionConfig struct
+  - [x] 5.4 Create `internal/tui/practice.go` with PracticeModel Bubble Tea model that holds SessionConfig, current sentence, user input, question counter, correct answer count
+  - [x] 5.5 Implement Init() method that queries sentences from database based on SessionConfig (filter by difficulty_phase and number), shuffles results, and stores in model
+  - [x] 5.6 Implement Update() method to handle:
     - Key presses for text input (Greek characters)
     - Enter key to submit answer
     - Ctrl+C or 'q' to quit
     - After feedback, any key to continue to next question
-  - [ ] 5.7 Implement View() method to render question screen with English prompt, input field, and instructions
-  - [ ] 5.8 Implement answer validation logic - exact Unicode string comparison between user input and correct_answer from database
-  - [ ] 5.9 Create `internal/tui/feedback.go` with FeedbackModel Bubble Tea model for displaying results
-  - [ ] 5.10 Implement feedback screen that displays:
+  - [x] 5.7 Implement View() method to render question screen with English prompt, input field, and instructions
+  - [x] 5.8 Implement answer validation logic - exact Unicode string comparison between user input and correct_answer from database
+  - [x] 5.9 Create `internal/tui/feedback.go` with RenderFeedback function for displaying results
+  - [x] 5.10 Implement feedback screen that displays:
     - Correct/Incorrect indicator (✓ or ✗)
     - User's answer and correct answer (if incorrect)
     - Full explanation retrieved from database (translation, syntactic role, morphology)
     - Instruction to press any key to continue
-  - [ ] 5.11 For fixed sessions, implement completion screen showing total answered and accuracy percentage, with options to quit or restart
-  - [ ] 5.12 Add Greek Unicode rendering support with proper UTF-8 handling
-  - [ ] 5.13 Style TUI with lipgloss for borders, colors, and layout
-  - [ ] 5.14 Create `internal/commands/practice.go` with Cobra command that checks database is not empty, creates Bubble Tea program with SetupModel, and runs it
+  - [x] 5.11 For fixed sessions, implement completion screen showing total answered and accuracy percentage, with options to quit or restart
+  - [x] 5.12 Add Greek Unicode rendering support with proper UTF-8 handling
+  - [x] 5.13 Style TUI with lipgloss for borders, colors, and layout
+  - [x] 5.14 Create `internal/commands/practice.go` with Cobra command that checks database is not empty, creates Bubble Tea program with SetupModel, and runs it
 
 - [ ] 6.0 Implement add and list commands
   - [ ] 6.1 Create `internal/commands/add.go` with interactive prompts for:
