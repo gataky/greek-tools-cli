@@ -139,13 +139,17 @@ func (m PracticeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			case "backspace":
 				if len(m.userInput) > 0 {
-					m.userInput = m.userInput[:len(m.userInput)-1]
+					// Convert to runes to handle multi-byte Unicode characters properly
+					runes := []rune(m.userInput)
+					if len(runes) > 0 {
+						m.userInput = string(runes[:len(runes)-1])
+					}
 				}
 
 			default:
 				// Add character to input
-				if len(msg.String()) == 1 || len(msg.Runes) > 0 {
-					m.userInput += msg.String()
+				if len(msg.Runes) > 0 {
+					m.userInput += string(msg.Runes)
 				}
 			}
 
