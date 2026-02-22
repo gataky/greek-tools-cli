@@ -159,18 +159,18 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 5.13 Style TUI with lipgloss for borders, colors, and layout
   - [x] 5.14 Create `internal/commands/practice.go` with Cobra command that checks database is not empty, creates Bubble Tea program with SetupModel, and runs it
 
-- [ ] 6.0 Implement add and list commands
-  - [ ] 6.1 Create `internal/commands/add.go` with interactive prompts for:
+- [x] 6.0 Implement add and list commands
+  - [x] 6.1 Create `internal/commands/add.go` with interactive prompts for:
     - English translation input
     - Greek nominative singular input
     - Gender selection (provide options: 1. masculine, 2. feminine, 3. neuter, 4. invariable)
-  - [ ] 6.2 After collecting input, call ClaudeClient to generate declensions, sentences, and explanations (same as import process)
-  - [ ] 6.3 Insert generated data into database and display confirmation with sentence count
-  - [ ] 6.4 Create `internal/commands/list.go` with table display of all nouns
-  - [ ] 6.5 Implement query to retrieve all nouns ordered by ID
-  - [ ] 6.6 Format output as table with columns: ID, English, Greek (nominative), Gender
-  - [ ] 6.7 Add pagination if more than 50 nouns (display 50 per page with navigation prompt)
-  - [ ] 6.8 Wire both commands into main.go Cobra command tree
+  - [x] 6.2 After collecting input, call ClaudeClient to generate declensions, sentences, and explanations (same as import process)
+  - [x] 6.3 Insert generated data into database and display confirmation with sentence count
+  - [x] 6.4 Create `internal/commands/list.go` with table display of all nouns
+  - [x] 6.5 Implement query to retrieve all nouns ordered by ID
+  - [x] 6.6 Format output as table with columns: ID, English, Greek (nominative), Gender
+  - [x] 6.7 Add pagination if more than 50 nouns (display 50 per page with navigation prompt)
+  - [x] 6.8 Wire both commands into main.go Cobra command tree
 
 - [ ] 7.0 Implement testing suite
   - [ ] 7.1 Create `testdata/sample_words.csv` with 5 test nouns (mix of genders: masculine, feminine, neuter)
