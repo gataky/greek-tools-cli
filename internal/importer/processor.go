@@ -201,13 +201,13 @@ func (p *ImportProcessor) ProcessImport(csvPath string) error {
 
 	// Print summary
 	duration := time.Since(startTime)
-	fmt.Printf("\n" + strings.Repeat("=", 50) + "\n")
-	fmt.Printf("Import Complete!\n")
+	fmt.Print("\n" + strings.Repeat("=", 50) + "\n")
+	fmt.Println("Import Complete!")
 	fmt.Printf("  Nouns imported: %d\n", len(rows)-startRow)
 	fmt.Printf("  Sentences generated: %d\n", totalSentences)
 	fmt.Printf("  API calls made: %d\n", apiCalls)
 	fmt.Printf("  Time elapsed: %s\n", duration.Round(time.Second))
-	fmt.Printf(strings.Repeat("=", 50) + "\n")
+	fmt.Println(strings.Repeat("=", 50))
 
 	return nil
 }

@@ -172,35 +172,35 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 6.7 Add pagination if more than 50 nouns (display 50 per page with navigation prompt)
   - [x] 6.8 Wire both commands into main.go Cobra command tree
 
-- [ ] 7.0 Implement testing suite
-  - [ ] 7.1 Create `testdata/sample_words.csv` with 5 test nouns (mix of genders: masculine, feminine, neuter)
-  - [ ] 7.2 Create `testdata/mock_responses.json` with sample Claude API responses for declensions, sentences, and explanations
-  - [ ] 7.3 Create `internal/storage/repository_test.go` with unit tests for:
+- [x] 7.0 Implement testing suite
+  - [x] 7.1 Create `testdata/sample_words.csv` with 5 test nouns (mix of genders: masculine, feminine, neuter)
+  - [x] 7.2 Create `testdata/mock_responses.json` with sample Claude API responses for declensions, sentences, and explanations
+  - [x] 7.3 Create `internal/storage/repository_test.go` with unit tests for:
     - Database initialization and migrations
     - CreateNoun, GetNoun, ListNouns operations
     - CreateSentence, GetRandomSentences with filtering
     - CreateExplanation, GetExplanationBySentenceID
     - Foreign key constraints
     - Transaction rollback on error
-  - [ ] 7.4 Create `internal/ai/retry_test.go` with unit tests for:
+  - [x] 7.4 Create `internal/ai/retry_test.go` with unit tests for:
     - Exponential backoff calculation (verify 1s, 2s, 4s progression)
     - Retry wrapper with mock functions that fail N times then succeed
     - Max retry limit (verify stops after 3 attempts)
-  - [ ] 7.5 Create `internal/importer/csv_test.go` with unit tests for:
+  - [x] 7.5 Create `internal/importer/csv_test.go` with unit tests for:
     - Valid CSV parsing
     - Invalid CSV (missing columns, empty rows, invalid gender values)
     - Unicode handling for Greek characters
-  - [ ] 7.6 Create `internal/models/noun_test.go` with validation tests for struct field types and db tags
-  - [ ] 7.7 Run full test suite with `go test ./...` and verify all tests pass
-  - [ ] 7.8 Manually test import command with testdata/sample_words.csv (requires ANTHROPIC_API_KEY set)
-  - [ ] 7.9 Manually test practice command with beginner difficulty and verify:
+  - [x] 7.6 Create `internal/models/noun_test.go` with validation tests for struct field types and db tags
+  - [x] 7.7 Run full test suite with `go test ./...` and verify all tests pass
+  - [x] 7.8 Manually test import command with testdata/sample_words.csv (requires ANTHROPIC_API_KEY set)
+  - [x] 7.9 Manually test practice command with beginner difficulty and verify:
     - Greek Unicode renders correctly
     - Exact answer matching works with accents
     - Explanations display properly
     - Session completion shows correct accuracy
-  - [ ] 7.10 Manually test add command by adding one noun interactively
-  - [ ] 7.11 Manually test list command to verify table display
-  - [ ] 7.12 Test error scenarios:
+  - [x] 7.10 Manually test add command by adding one noun interactively
+  - [x] 7.11 Manually test list command to verify table display
+  - [x] 7.12 Test error scenarios:
     - Run import without ANTHROPIC_API_KEY (verify clear error message)
     - Run practice with empty database (verify error message)
     - Provide invalid CSV format (verify validation error)

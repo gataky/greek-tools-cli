@@ -1,0 +1,33 @@
+{
+  "declension_response": {
+    "nominative_sg": "δάσκαλος",
+    "nom_sg_article": "ο",
+    "genitive_sg": "δασκάλου",
+    "gen_sg_article": "του",
+    "accusative_sg": "δάσκαλο",
+    "acc_sg_article": "τον",
+    "nominative_pl": "δάσκαλοι",
+    "nom_pl_article": "οι",
+    "genitive_pl": "δασκάλων",
+    "gen_pl_article": "των",
+    "accusative_pl": "δασκάλους",
+    "acc_pl_article": "τους"
+  },
+  "sentence_responses": [
+    {
+      "english_prompt": "I see ___ (the teacher)",
+      "greek_sentence": "Βλέπω τον δάσκαλο",
+      "correct_answer": "τον δάσκαλο",
+      "case_type": "accusative",
+      "number": "singular",
+      "difficulty_phase": 1,
+      "context_type": "direct_object",
+      "preposition": null
+    }
+  ],
+  "explanation_response": {
+    "translation": "I see the teacher",
+    "syntactic_role": "'τον δάσκαλο' is the direct object of βλέπω (I see). Direct objects require the accusative case.",
+    "morphology": "The masculine noun ο δάσκαλος (nominative) becomes τον δάσκαλο (accusative). The article changes from ο → τον and the noun ending changes from -ος → -ο."
+  }
+}
