@@ -41,13 +41,6 @@ type SentenceResponse struct {
 	Preposition     *string `json:"preposition"`
 }
 
-// ExplanationResponse represents a grammar explanation
-type ExplanationResponse struct {
-	Translation   string `json:"translation"`
-	SyntacticRole string `json:"syntactic_role"`
-	Morphology    string `json:"morphology"`
-}
-
 // ClaudeClient wraps the Anthropic SDK client
 type ClaudeClient struct {
 	client *anthropic.Client
@@ -204,40 +197,3 @@ func (c *ClaudeClient) GenerateSentences(greek, english, gender string) ([]Sente
 }
 
 // GenerateExplanations generates explanations for multiple sentences
-func (c *ClaudeClient) GenerateExplanations(sentences []SentenceResponse) ([]ExplanationResponse, error) {
-	explanations := make([]ExplanationResponse, 0, len(sentences))
-
-	for _, sentence := range sentences {
-		prompt := GenerateExplanationPrompt(sentence.GreekSentence, sentence.CorrectAnswer)
-
-		var explanation ExplanationResponse
-		err := RetryWithBackoff(func() error {
-			ctx := context.Background()
-			text, err := c.callAPI(ctx, prompt)
-			if err != nil {
-				c.logError("Explanation API call failed for '%s': %v", sentence.GreekSentence, err)
-				return err
-			}
-
-			// Parse JSON response
-			var expl ExplanationResponse
-			if err := json.Unmarshal([]byte(text), &expl); err != nil {
-				c.logError("Failed to parse explanation JSON for '%s': %v\nResponse: %s", sentence.GreekSentence, err, text)
-				return fmt.Errorf("invalid JSON response: %w", err)
-			}
-
-			explanation = expl
-			return nil
-		}, 3) // Max 3 retries
-
-		if err != nil {
-			c.logError("Skipping explanation for '%s' after retries", sentence.GreekSentence)
-			// Continue with other sentences, don't fail entire batch
-			continue
-		}
-
-		explanations = append(explanations, explanation)
-	}
-
-	return explanations, nil
-}

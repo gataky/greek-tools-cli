@@ -13,9 +13,8 @@ import (
 
 // ImportProcessor orchestrates the CSV import process
 type ImportProcessor struct {
-	repo              storage.Repository
-	client            *ai.ClaudeClient
-	skipExplanations  bool
+	repo   storage.Repository
+	client *ai.ClaudeClient
 }
 
 // NewImportProcessor creates a new import processor
@@ -24,11 +23,6 @@ func NewImportProcessor(repo storage.Repository, client *ai.ClaudeClient) *Impor
 		repo:   repo,
 		client: client,
 	}
-}
-
-// SetSkipExplanations enables or disables explanation generation
-func (p *ImportProcessor) SetSkipExplanations(skip bool) {
-	p.skipExplanations = skip
 }
 
 // ProcessImport imports nouns from a CSV file with AI generation
@@ -142,24 +136,7 @@ func (p *ImportProcessor) ProcessImport(csvPath string) error {
 		apiCalls++
 		fmt.Printf("✓ (%d sentences)\n", len(sentences))
 
-		// Generate explanations (optional)
-		var explanations []ai.ExplanationResponse
-		if !p.skipExplanations {
-			fmt.Print("  → Generating explanations... ")
-			explanations, err = p.client.GenerateExplanations(sentences)
-			if err != nil {
-				fmt.Printf("FAILED\n")
-				fmt.Printf("     Error: %v\n", err)
-				// Continue anyway, we have sentences
-			} else {
-				apiCalls += len(sentences)
-				fmt.Printf("✓ (%d explanations)\n", len(explanations))
-			}
-		} else {
-			fmt.Println("  → Skipping explanations (--skip-explanations)")
-		}
-
-		// Store sentences and explanations
+		// Store sentences
 		fmt.Print("  → Storing in database... ")
 		for j, sentenceResp := range sentences {
 			sentence := &models.Sentence{
@@ -177,20 +154,6 @@ func (p *ImportProcessor) ProcessImport(csvPath string) error {
 			if err := p.repo.CreateSentence(sentence); err != nil {
 				fmt.Printf("\n     Warning: Failed to store sentence %d: %v\n", j+1, err)
 				continue
-			}
-
-			// Store explanation if available
-			if j < len(explanations) {
-				explanation := &models.Explanation{
-					SentenceID:    sentence.ID,
-					Translation:   explanations[j].Translation,
-					SyntacticRole: explanations[j].SyntacticRole,
-					Morphology:    explanations[j].Morphology,
-				}
-
-				if err := p.repo.CreateExplanation(explanation); err != nil {
-					fmt.Printf("\n     Warning: Failed to store explanation %d: %v\n", j+1, err)
-				}
 			}
 
 			totalSentences++

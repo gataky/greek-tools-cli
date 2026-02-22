@@ -40,65 +40,65 @@ Update the file after completing each sub-task, not just after completing an ent
 
 ## Tasks
 
-- [ ] 0.0 Create feature branch
-  - [ ] 0.1 Create and checkout a new branch with `git checkout -b feature/template-explanations`
+- [x] 0.0 Create feature branch
+  - [x] 0.1 Create and checkout a new branch with `git checkout -b feature/template-explanations`
 
-- [ ] 1.0 Create explanation generation package
-  - [ ] 1.1 Create directory `internal/explanations/`
-  - [ ] 1.2 Create `internal/explanations/generator.go` with package declaration, imports (models package), and empty Generate function signature
-  - [ ] 1.3 Create `internal/explanations/templates.go` with package declaration and empty SyntacticRoleTemplate function
-  - [ ] 1.4 Create `internal/explanations/translation.go` with package declaration and empty GenerateTranslation function
-  - [ ] 1.5 Create `internal/explanations/morphology.go` with package declaration and empty FormatMorphology function
-  - [ ] 1.6 Create `internal/explanations/generator_test.go` with package declaration and imports
+- [x] 1.0 Create explanation generation package
+  - [x] 1.1 Create directory `internal/explanations/`
+  - [x] 1.2 Create `internal/explanations/generator.go` with package declaration, imports (models package), and empty Generate function signature
+  - [x] 1.3 Create `internal/explanations/templates.go` with package declaration and empty SyntacticRoleTemplate function
+  - [x] 1.4 Create `internal/explanations/translation.go` with package declaration and empty GenerateTranslation function
+  - [x] 1.5 Create `internal/explanations/morphology.go` with package declaration and empty FormatMorphology function
+  - [x] 1.6 Create `internal/explanations/generator_test.go` with package declaration and imports
 
-- [ ] 2.0 Implement core template logic
-  - [ ] 2.1 Implement `SyntacticRoleTemplate(contextType, caseType string, prep *string) string` in templates.go with switch statements for all context types (direct_object, possession, preposition)
-  - [ ] 2.2 Add preposition case map to templates.go with entries for σε, από, για, με, χωρίς, μετά, πριν and their expected cases
-  - [ ] 2.3 Implement `FormatMorphology(noun *models.Noun, caseType, number string) string` in morphology.go to build nominative→target transformation string using noun fields
-  - [ ] 2.4 Implement `GenerateTranslation(englishPrompt, greekSentence string) string` in translation.go to find "___" placeholder, extract English from prompt parentheses, and construct translation
-  - [ ] 2.5 Implement `Generate(sentence *models.Sentence, noun *models.Noun) (*models.Explanation, error)` in generator.go to call all helper functions and return populated Explanation struct
+- [x] 2.0 Implement core template logic
+  - [x] 2.1 Implement `SyntacticRoleTemplate(contextType, caseType string, prep *string) string` in templates.go with switch statements for all context types (direct_object, possession, preposition)
+  - [x] 2.2 Add preposition case map to templates.go with entries for σε, από, για, με, χωρίς, μετά, πριν and their expected cases
+  - [x] 2.3 Implement `FormatMorphology(noun *models.Noun, caseType, number string) string` in morphology.go to build nominative→target transformation string using noun fields
+  - [x] 2.4 Implement `GenerateTranslation(englishPrompt, greekSentence string) string` in translation.go to find "___" placeholder, extract English from prompt parentheses, and construct translation
+  - [x] 2.5 Implement `Generate(sentence *models.Sentence, noun *models.Noun) (*models.Explanation, error)` in generator.go to call all helper functions and return populated Explanation struct
 
-- [ ] 3.0 Remove database explanation storage
-  - [ ] 3.1 Create `internal/storage/migrations/002_drop_explanations.sql` with `DROP TABLE IF EXISTS explanations;`
-  - [ ] 3.2 Update `internal/storage/migrations.go` to embed and execute the new migration file
-  - [ ] 3.3 Remove `CreateExplanation(explanation *models.Explanation) error` method signature from Repository interface in repository.go
-  - [ ] 3.4 Remove `GetExplanationBySentenceID(sentenceID int64) (*models.Explanation, error)` method signature from Repository interface in repository.go
-  - [ ] 3.5 Remove `CreateExplanation` implementation method from SQLiteRepository struct in repository.go
-  - [ ] 3.6 Remove `GetExplanationBySentenceID` implementation method from SQLiteRepository struct in repository.go
-  - [ ] 3.7 Remove `TestCreateAndGetExplanation` and all explanation-related test functions from repository_test.go
+- [x] 3.0 Remove database explanation storage
+  - [x] 3.1 Create `internal/storage/migrations/002_drop_explanations.sql` with `DROP TABLE IF EXISTS explanations;`
+  - [x] 3.2 Update `internal/storage/migrations.go` to embed and execute the new migration file
+  - [x] 3.3 Remove `CreateExplanation(explanation *models.Explanation) error` method signature from Repository interface in repository.go
+  - [x] 3.4 Remove `GetExplanationBySentenceID(sentenceID int64) (*models.Explanation, error)` method signature from Repository interface in repository.go
+  - [x] 3.5 Remove `CreateExplanation` implementation method from SQLiteRepository struct in repository.go
+  - [x] 3.6 Remove `GetExplanationBySentenceID` implementation method from SQLiteRepository struct in repository.go
+  - [x] 3.7 Remove `TestCreateAndGetExplanation` and all explanation-related test functions from repository_test.go
 
-- [ ] 4.0 Update practice TUI to use template generator
-  - [ ] 4.1 Add import for `github.com/gataky/greekmaster/internal/explanations` package in practice.go
-  - [ ] 4.2 In practice.go Update() method feedback state, add `noun, err := m.repo.GetNoun(m.currentSentence.NounID)` call before explanation generation
-  - [ ] 4.3 Replace `m.repo.GetExplanationBySentenceID(m.currentSentence.ID)` with `explanations.Generate(m.currentSentence, noun)` in practice.go
-  - [ ] 4.4 Update error handling to check both GetNoun and Generate errors, setting m.err appropriately
+- [x] 4.0 Update practice TUI to use template generator
+  - [x] 4.1 Add import for `github.com/gataky/greekmaster/internal/explanations` package in practice.go
+  - [x] 4.2 In practice.go Update() method feedback state, add `noun, err := m.repo.GetNoun(m.currentSentence.NounID)` call before explanation generation
+  - [x] 4.3 Replace `m.repo.GetExplanationBySentenceID(m.currentSentence.ID)` with `explanations.Generate(m.currentSentence, noun)` in practice.go
+  - [x] 4.4 Update error handling to check both GetNoun and Generate errors, setting m.err appropriately
 
-- [ ] 5.0 Remove AI explanation generation
-  - [ ] 5.1 Remove `GenerateExplanations(sentences []SentenceResponse) ([]ExplanationResponse, error)` method from ClaudeClient in client.go
-  - [ ] 5.2 Remove `ExplanationResponse` type definition from client.go
-  - [ ] 5.3 Remove `GenerateExplanationPrompt(greekSentence, correctAnswer string) string` function from prompts.go
-  - [ ] 5.4 Remove all `GenerateExplanations()` calls from processor.go (around line 141-149)
-  - [ ] 5.5 Remove all explanation storage logic from processor.go (loop storing explanations around line 172-183)
-  - [ ] 5.6 Remove all explanation generation logic from add.go (around line 142-148)
-  - [ ] 5.7 Remove all explanation storage logic from add.go (loop storing explanations around line 170-181)
+- [x] 5.0 Remove AI explanation generation
+  - [x] 5.1 Remove `GenerateExplanations(sentences []SentenceResponse) ([]ExplanationResponse, error)` method from ClaudeClient in client.go
+  - [x] 5.2 Remove `ExplanationResponse` type definition from client.go
+  - [x] 5.3 Remove `GenerateExplanationPrompt(greekSentence, correctAnswer string) string` function from prompts.go
+  - [x] 5.4 Remove all `GenerateExplanations()` calls from processor.go (around line 141-149)
+  - [x] 5.5 Remove all explanation storage logic from processor.go (loop storing explanations around line 172-183)
+  - [x] 5.6 Remove all explanation generation logic from add.go (around line 142-148)
+  - [x] 5.7 Remove all explanation storage logic from add.go (loop storing explanations around line 170-181)
 
-- [ ] 6.0 Remove --skip-explanations flag
-  - [ ] 6.1 Remove `skipExplanations bool` variable declaration from import.go NewImportCmd function
-  - [ ] 6.2 Remove `cmd.Flags().BoolVar(&skipExplanations, "skip-explanations", ...)` line from import.go
-  - [ ] 6.3 Remove `processor.SetSkipExplanations(skipExplanations)` call from import.go
-  - [ ] 6.4 Remove `skipExplanations bool` variable declaration from add.go NewAddCmd function
-  - [ ] 6.5 Remove `cmd.Flags().BoolVar(&skipExplanations, "skip-explanations", ...)` line from add.go
-  - [ ] 6.6 Remove `SetSkipExplanations(skip bool)` method from processor.go
-  - [ ] 6.7 Remove `skipExplanations bool` field from ImportProcessor struct in processor.go
-  - [ ] 6.8 Remove all conditional logic checking `p.skipExplanations` from processor.go and add.go
+- [x] 6.0 Remove --skip-explanations flag
+  - [x] 6.1 Remove `skipExplanations bool` variable declaration from import.go NewImportCmd function
+  - [x] 6.2 Remove `cmd.Flags().BoolVar(&skipExplanations, "skip-explanations", ...)` line from import.go
+  - [x] 6.3 Remove `processor.SetSkipExplanations(skipExplanations)` call from import.go
+  - [x] 6.4 Remove `skipExplanations bool` variable declaration from add.go NewAddCmd function
+  - [x] 6.5 Remove `cmd.Flags().BoolVar(&skipExplanations, "skip-explanations", ...)` line from add.go
+  - [x] 6.6 Remove `SetSkipExplanations(skip bool)` method from processor.go
+  - [x] 6.7 Remove `skipExplanations bool` field from ImportProcessor struct in processor.go
+  - [x] 6.8 Remove all conditional logic checking `p.skipExplanations` from processor.go and add.go
 
-- [ ] 7.0 Implement comprehensive tests
-  - [ ] 7.1 Implement `TestGenerate` in generator_test.go with table-driven tests covering all combinations: 3 case types × 2 numbers × 3 context types, plus preposition variations
-  - [ ] 7.2 Implement `TestSyntacticRoleTemplate` in generator_test.go testing all context types (direct_object, possession) and all prepositions (σε, από, για, etc.)
-  - [ ] 7.3 Implement `TestGenerateTranslation` in generator_test.go with test cases for various prompt formats, with/without parentheses, edge cases like no blank or multiple blanks
-  - [ ] 7.4 Implement `TestFormatMorphology` in generator_test.go testing all case/number combinations (accusative singular, genitive plural, etc.) for all genders (masculine, feminine, neuter)
-  - [ ] 7.5 Run `go test ./internal/explanations -v` and verify all tests pass with clear output
-  - [ ] 7.6 Run `go test ./...` to verify no regressions in other packages
+- [x] 7.0 Implement comprehensive tests
+  - [x] 7.1 Implement `TestGenerate` in generator_test.go with table-driven tests covering all combinations: 3 case types × 2 numbers × 3 context types, plus preposition variations
+  - [x] 7.2 Implement `TestSyntacticRoleTemplate` in generator_test.go testing all context types (direct_object, possession) and all prepositions (σε, από, για, etc.)
+  - [x] 7.3 Implement `TestGenerateTranslation` in generator_test.go with test cases for various prompt formats, with/without parentheses, edge cases like no blank or multiple blanks
+  - [x] 7.4 Implement `TestFormatMorphology` in generator_test.go testing all case/number combinations (accusative singular, genitive plural, etc.) for all genders (masculine, feminine, neuter)
+  - [x] 7.5 Run `go test ./internal/explanations -v` and verify all tests pass with clear output
+  - [x] 7.6 Run `go test ./...` to verify no regressions in other packages
 
 - [ ] 8.0 Verify and cleanup
   - [ ] 8.1 Run `go build -o greekmaster cmd/greekmaster/main.go` and verify successful compilation

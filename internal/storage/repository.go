@@ -22,10 +22,6 @@ type Repository interface {
 	CreateSentence(sentence *models.Sentence) error
 	GetRandomSentences(phase int, number string, limit int) ([]*models.Sentence, error)
 
-	// Explanation operations
-	CreateExplanation(explanation *models.Explanation) error
-	GetExplanationBySentenceID(sentenceID int64) (*models.Explanation, error)
-
 	// Close database connection
 	Close() error
 }
@@ -175,42 +171,6 @@ func (r *SQLiteRepository) GetRandomSentences(phase int, number string, limit in
 		return nil, fmt.Errorf("failed to get random sentences: %w", err)
 	}
 	return sentences, nil
-}
-
-// CreateExplanation inserts a new explanation into the database
-func (r *SQLiteRepository) CreateExplanation(explanation *models.Explanation) error {
-	query := `
-		INSERT INTO explanations (
-			sentence_id, translation, syntactic_role, morphology
-		) VALUES (
-			:sentence_id, :translation, :syntactic_role, :morphology
-		)
-	`
-	result, err := r.db.NamedExec(query, explanation)
-	if err != nil {
-		return fmt.Errorf("failed to create explanation: %w", err)
-	}
-
-	id, err := result.LastInsertId()
-	if err != nil {
-		return fmt.Errorf("failed to get last insert id: %w", err)
-	}
-	explanation.ID = id
-	return nil
-}
-
-// GetExplanationBySentenceID retrieves an explanation for a specific sentence
-func (r *SQLiteRepository) GetExplanationBySentenceID(sentenceID int64) (*models.Explanation, error) {
-	var explanation models.Explanation
-	query := "SELECT * FROM explanations WHERE sentence_id = ?"
-	err := r.db.Get(&explanation, query, sentenceID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, fmt.Errorf("explanation not found for sentence id %d", sentenceID)
-		}
-		return nil, fmt.Errorf("failed to get explanation: %w", err)
-	}
-	return &explanation, nil
 }
 
 // Close closes the database connection

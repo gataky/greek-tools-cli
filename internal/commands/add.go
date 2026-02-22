@@ -15,7 +15,6 @@ import (
 // NewAddCmd creates the add command
 func NewAddCmd() *cobra.Command {
 	var dbPath string
-	var skipExplanations bool
 
 	cmd := &cobra.Command{
 		Use:   "add",
@@ -139,21 +138,7 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 			}
 			fmt.Printf("✓ (%d sentences)\n", len(sentences))
 
-			// Generate explanations (optional)
-			var explanations []ai.ExplanationResponse
-			if !skipExplanations {
-				fmt.Print("Generating explanations... ")
-				explanations, err = client.GenerateExplanations(sentences)
-				if err != nil {
-					fmt.Println("FAILED")
-					return fmt.Errorf("failed to generate explanations: %w", err)
-				}
-				fmt.Printf("✓ (%d explanations)\n", len(explanations))
-			} else {
-				fmt.Println("Skipping explanations (--skip-explanations)")
-			}
-
-			// Store sentences and explanations
+			// Store sentences
 			fmt.Print("Storing in database... ")
 			for j, sentenceResp := range sentences {
 				sentence := &models.Sentence{
@@ -171,20 +156,6 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 				if err := repo.CreateSentence(sentence); err != nil {
 					return fmt.Errorf("failed to store sentence %d: %w", j+1, err)
 				}
-
-				// Store explanation if available
-				if j < len(explanations) {
-					explanation := &models.Explanation{
-						SentenceID:    sentence.ID,
-						Translation:   explanations[j].Translation,
-						SyntacticRole: explanations[j].SyntacticRole,
-						Morphology:    explanations[j].Morphology,
-					}
-
-					if err := repo.CreateExplanation(explanation); err != nil {
-						return fmt.Errorf("failed to store explanation %d: %w", j+1, err)
-					}
-				}
 			}
 			fmt.Println("✓")
 
@@ -195,7 +166,6 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 	}
 
 	cmd.Flags().StringVar(&dbPath, "db-path", "", "Path to database file (default: ~/.greekmaster/greekmaster.db)")
-	cmd.Flags().BoolVar(&skipExplanations, "skip-explanations", false, "Skip generating explanations (saves API calls and cost)")
 
 	return cmd
 }

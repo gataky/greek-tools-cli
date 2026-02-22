@@ -8,6 +8,7 @@ import (
 
 	"github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/gataky/greekmaster/internal/explanations"
 	"github.com/gataky/greekmaster/internal/models"
 	"github.com/gataky/greekmaster/internal/storage"
 )
@@ -122,11 +123,15 @@ func (m PracticeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.incorrectCount++
 				}
 
-				// Load explanation
-				var err error
-				m.explanation, err = m.repo.GetExplanationBySentenceID(m.currentSentence.ID)
+				// Generate explanation using template
+				noun, err := m.repo.GetNoun(m.currentSentence.NounID)
 				if err != nil {
 					m.err = err
+				} else {
+					m.explanation, err = explanations.Generate(m.currentSentence, noun)
+					if err != nil {
+						m.err = err
+					}
 				}
 
 				m.state = "feedback"

@@ -47,13 +47,3 @@ For number, use ONLY: "singular" or "plural"
 Return only valid JSON array, no explanation.`, greek, english, gender)
 }
 
-// GenerateExplanationPrompt creates a prompt for generating grammar explanations
-func GenerateExplanationPrompt(greekSentence, correctAnswer string) string {
-	return fmt.Sprintf(`For the sentence '%s' where the answer is '%s', provide a grammar explanation as the Modern Greek Grammar Analyst. Return JSON:
-{
-  "translation": "Full English translation",
-  "syntactic_role": "Explain why this case is required",
-  "morphology": "Explain the form transformation"
-}
-Be concise and analytical, no conversational filler. Return only valid JSON, no explanation.`, greekSentence, correctAnswer)
-}

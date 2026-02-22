@@ -206,55 +206,6 @@ func TestGetRandomSentences(t *testing.T) {
 	}
 }
 
-func TestCreateAndGetExplanation(t *testing.T) {
-	repo := setupTestDB(t)
-	defer repo.Close()
-
-	// Create noun and sentence first
-	noun := &models.Noun{
-		English: "teacher", Gender: "masculine",
-		NominativeSg: "δάσκαλος", GenitiveSg: "δασκάλου", AccusativeSg: "δάσκαλο",
-		NominativePl: "δάσκαλοι", GenitivePl: "δασκάλων", AccusativePl: "δασκάλους",
-		NomSgArticle: "ο", GenSgArticle: "του", AccSgArticle: "τον",
-		NomPlArticle: "οι", GenPlArticle: "των", AccPlArticle: "τους",
-	}
-	if err := repo.CreateNoun(noun); err != nil {
-		t.Fatal(err)
-	}
-
-	sentence := &models.Sentence{
-		NounID: noun.ID, EnglishPrompt: "Test", GreekSentence: "Test",
-		CorrectAnswer: "answer", CaseType: "accusative", Number: "singular",
-		DifficultyPhase: 1, ContextType: "direct_object",
-	}
-	if err := repo.CreateSentence(sentence); err != nil {
-		t.Fatal(err)
-	}
-
-	// Create explanation
-	explanation := &models.Explanation{
-		SentenceID:    sentence.ID,
-		Translation:   "I see the teacher",
-		SyntacticRole: "Direct object requires accusative",
-		Morphology:    "ο δάσκαλος → τον δάσκαλο",
-	}
-
-	err := repo.CreateExplanation(explanation)
-	if err != nil {
-		t.Fatalf("CreateExplanation() error = %v", err)
-	}
-
-	// Get explanation
-	retrieved, err := repo.GetExplanationBySentenceID(sentence.ID)
-	if err != nil {
-		t.Fatalf("GetExplanationBySentenceID() error = %v", err)
-	}
-
-	if retrieved.Translation != explanation.Translation {
-		t.Errorf("Expected Translation %q, got %q", explanation.Translation, retrieved.Translation)
-	}
-}
-
 func TestForeignKeyConstraint(t *testing.T) {
 	repo := setupTestDB(t)
 	defer repo.Close()

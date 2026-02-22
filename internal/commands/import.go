@@ -13,7 +13,6 @@ import (
 // NewImportCmd creates the import command
 func NewImportCmd() *cobra.Command {
 	var dbPath string
-	var skipExplanations bool
 
 	cmd := &cobra.Command{
 		Use:   "import <csv-file>",
@@ -54,7 +53,6 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 
 			// Create processor and run import
 			processor := importer.NewImportProcessor(repo, client)
-			processor.SetSkipExplanations(skipExplanations)
 			if err := processor.ProcessImport(csvPath); err != nil {
 				return fmt.Errorf("import failed: %w", err)
 			}
@@ -64,7 +62,6 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 	}
 
 	cmd.Flags().StringVar(&dbPath, "db-path", "", "Path to database file (default: ~/.greekmaster/greekmaster.db)")
-	cmd.Flags().BoolVar(&skipExplanations, "skip-explanations", false, "Skip generating explanations (saves API calls and cost)")
 
 	return cmd
 }
