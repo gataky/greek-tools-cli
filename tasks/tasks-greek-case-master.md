@@ -113,14 +113,14 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 3.8 Implement `GenerateExplanations(sentences []SentenceResponse) ([]ExplanationResponse, error)` method that generates explanations for multiple sentences in batch
   - [x] 3.9 Add error handling for invalid JSON responses, log errors to ~/.greekmaster/import.log
 
-- [ ] 4.0 Implement CSV import and AI generation orchestration
-  - [ ] 4.1 Create `internal/importer/csv.go` with function to parse CSV file, validate headers (english, greek, attribute), and return slice of CSVRow structs
-  - [ ] 4.2 Add CSV validation logic to check for empty required fields and valid gender values (masculine, feminine, neuter, invariable)
-  - [ ] 4.3 Create `internal/importer/processor.go` with ImportProcessor struct that holds ClaudeClient and Repository dependencies
-  - [ ] 4.4 Implement `ProcessImport(csvPath string) error` function that orchestrates the full import workflow
-  - [ ] 4.5 Add checkpoint detection logic - check if import was previously started for this CSV file and prompt user to resume or start fresh
-  - [ ] 4.6 Implement progress tracking - display current noun being processed, completion percentage, and API call count
-  - [ ] 4.7 For each CSV row:
+- [x] 4.0 Implement CSV import and AI generation orchestration
+  - [x] 4.1 Create `internal/importer/csv.go` with function to parse CSV file, validate headers (english, greek, attribute), and return slice of CSVRow structs
+  - [x] 4.2 Add CSV validation logic to check for empty required fields and valid gender values (masculine, feminine, neuter, invariable)
+  - [x] 4.3 Create `internal/importer/processor.go` with ImportProcessor struct that holds ClaudeClient and Repository dependencies
+  - [x] 4.4 Implement `ProcessImport(csvPath string) error` function that orchestrates the full import workflow
+  - [x] 4.5 Add checkpoint detection logic - check if import was previously started for this CSV file and prompt user to resume or start fresh
+  - [x] 4.6 Implement progress tracking - display current noun being processed, completion percentage, and API call count
+  - [x] 4.7 For each CSV row:
     - Call ClaudeClient.GenerateDeclensions() and store result
     - Call ClaudeClient.GenerateSentences() and store 12 sentences
     - Call ClaudeClient.GenerateExplanations() for all sentences
@@ -128,9 +128,9 @@ Update the file after completing each sub-task, not just after completing an ent
     - Insert all 12 Sentences with foreign key to noun
     - Insert all 12 Explanations with foreign keys to sentences
     - Update checkpoint with current row number
-  - [ ] 4.8 Add error handling with retry logic - if API call fails after 3 retries, log error to import.log, skip noun, and continue
-  - [ ] 4.9 Display completion summary showing total nouns imported and total sentences generated
-  - [ ] 4.10 Create `internal/commands/import.go` with Cobra command definition that calls ImportProcessor
+  - [x] 4.8 Add error handling with retry logic - if API call fails after 3 retries, log error to import.log, skip noun, and continue
+  - [x] 4.9 Display completion summary showing total nouns imported and total sentences generated
+  - [x] 4.10 Create `internal/commands/import.go` with Cobra command definition that calls ImportProcessor
 
 - [ ] 5.0 Implement practice TUI with Bubble Tea
   - [ ] 5.1 Create `internal/tui/setup.go` with SetupModel Bubble Tea model for session configuration

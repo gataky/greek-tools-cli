@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gataky/greekmaster/internal/commands"
 	"github.com/spf13/cobra"
 )
 
@@ -19,11 +20,11 @@ tables to instinctive application of cases in real sentence contexts.`,
 }
 
 func init() {
-	// Add commands will be registered here as we implement them
-	// rootCmd.AddCommand(importCmd)
-	// rootCmd.AddCommand(practiceCmd)
-	// rootCmd.AddCommand(addCmd)
-	// rootCmd.AddCommand(listCmd)
+	// Register commands
+	rootCmd.AddCommand(commands.NewImportCmd())
+	// rootCmd.AddCommand(commands.NewPracticeCmd())
+	// rootCmd.AddCommand(commands.NewAddCmd())
+	// rootCmd.AddCommand(commands.NewListCmd())
 }
 
 func main() {

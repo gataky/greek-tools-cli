@@ -7,7 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-//go:embed ../../migrations/001_initial_schema.sql
+//go:embed migrations/001_initial_schema.sql
 var initialSchema string
 
 // RunMigrations executes all database migrations
