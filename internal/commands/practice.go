@@ -52,34 +52,32 @@ translation, syntactic role, and morphology.`,
 				return fmt.Errorf("error running setup: %w", err)
 			}
 
+			// Get the final setup model
+			setupFinal, ok := finalModel.(tui.SetupModel)
+			if !ok {
+				return fmt.Errorf("unexpected model type")
+			}
+
 			// Check if user quit during setup
-			if setup, ok := finalModel.(tui.SetupModel); ok && setup.View() == "" {
+			if setupFinal.View() == "" {
 				return nil
 			}
 
 			// Get session config
-			var config tui.SessionConfigMsg
-			setupFinal := finalModel.(tui.SetupModel)
-			// Wait for next update to get the config
-			_, teaCmd := setupFinal.Update(nil)
-			if teaCmd != nil {
-				msg := teaCmd()
-				if cfgMsg, ok := msg.(tui.SessionConfigMsg); ok {
-					config = cfgMsg
-				}
+			config, complete := setupFinal.GetConfig()
+			if !complete {
+				return fmt.Errorf("setup was not completed")
 			}
 
-			// If we got a config, start practice
-			if config.Config.DifficultyLevel != "" {
-				practiceModel, err := tui.NewPracticeModel(repo, config.Config)
-				if err != nil {
-					return fmt.Errorf("failed to initialize practice session: %w", err)
-				}
+			// Start practice session
+			practiceModel, err := tui.NewPracticeModel(repo, config)
+			if err != nil {
+				return fmt.Errorf("failed to initialize practice session: %w", err)
+			}
 
-				p = tea.NewProgram(practiceModel)
-				if _, err := p.Run(); err != nil {
-					return fmt.Errorf("error running practice: %w", err)
-				}
+			p = tea.NewProgram(practiceModel)
+			if _, err := p.Run(); err != nil {
+				return fmt.Errorf("error running practice: %w", err)
 			}
 
 			return nil

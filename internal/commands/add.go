@@ -15,6 +15,7 @@ import (
 // NewAddCmd creates the add command
 func NewAddCmd() *cobra.Command {
 	var dbPath string
+	var skipExplanations bool
 
 	cmd := &cobra.Command{
 		Use:   "add",
@@ -138,14 +139,19 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 			}
 			fmt.Printf("✓ (%d sentences)\n", len(sentences))
 
-			// Generate explanations
-			fmt.Print("Generating explanations... ")
-			explanations, err := client.GenerateExplanations(sentences)
-			if err != nil {
-				fmt.Println("FAILED")
-				return fmt.Errorf("failed to generate explanations: %w", err)
+			// Generate explanations (optional)
+			var explanations []ai.ExplanationResponse
+			if !skipExplanations {
+				fmt.Print("Generating explanations... ")
+				explanations, err = client.GenerateExplanations(sentences)
+				if err != nil {
+					fmt.Println("FAILED")
+					return fmt.Errorf("failed to generate explanations: %w", err)
+				}
+				fmt.Printf("✓ (%d explanations)\n", len(explanations))
+			} else {
+				fmt.Println("Skipping explanations (--skip-explanations)")
 			}
-			fmt.Printf("✓ (%d explanations)\n", len(explanations))
 
 			// Store sentences and explanations
 			fmt.Print("Storing in database... ")
@@ -189,6 +195,7 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 	}
 
 	cmd.Flags().StringVar(&dbPath, "db-path", "", "Path to database file (default: ~/.greekmaster/greekmaster.db)")
+	cmd.Flags().BoolVar(&skipExplanations, "skip-explanations", false, "Skip generating explanations (saves API calls and cost)")
 
 	return cmd
 }

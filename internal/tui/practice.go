@@ -27,6 +27,7 @@ type PracticeModel struct {
 	explanation     *models.Explanation
 	err             error
 	rng             *rand.Rand // Random number generator
+	width           int        // Terminal width
 }
 
 // NewPracticeModel creates a new practice model
@@ -80,6 +81,7 @@ func NewPracticeModel(repo storage.Repository, config models.SessionConfig) (*Pr
 		currentIndex: 0,
 		state:        "question",
 		rng:          rng,
+		width:        80, // Default width
 	}
 
 	// Load first sentence
@@ -100,6 +102,10 @@ func (m PracticeModel) Init() tea.Cmd {
 
 func (m PracticeModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		return m, nil
+
 	case tea.KeyMsg:
 		switch m.state {
 		case "question":
@@ -253,7 +259,7 @@ func (m PracticeModel) renderQuestion() string {
 
 func (m PracticeModel) renderFeedback() string {
 	// Delegate to feedback.go
-	return RenderFeedback(m.isCorrect, m.userInput, m.currentSentence, m.explanation)
+	return RenderFeedback(m.isCorrect, m.userInput, m.currentSentence, m.explanation, m.width)
 }
 
 func (m PracticeModel) renderComplete() string {

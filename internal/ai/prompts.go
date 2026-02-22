@@ -36,6 +36,14 @@ Mix singular and plural forms. Return as JSON array with this structure:
   "preposition": null
 }, ...]
 
+IMPORTANT: For context_type, use ONLY these exact values:
+- "direct_object" - for direct objects (transitive verbs)
+- "possession" - for genitive possession contexts
+- "preposition" - for any sentence with a preposition
+
+For case_type, use ONLY: "nominative", "genitive", or "accusative"
+For number, use ONLY: "singular" or "plural"
+
 Return only valid JSON array, no explanation.`, greek, english, gender)
 }
 

@@ -16,6 +16,7 @@ type SetupModel struct {
 	includePlural bool
 	questionCount int
 	quitting      bool
+	complete      bool
 	err           error
 }
 
@@ -63,31 +64,17 @@ func (m SetupModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				case "3":
 					m.questionCount = 50
 				}
-				// Setup complete, transition to practice
-				return m, func() tea.Msg {
-					return SessionConfigMsg{
-						Config: models.SessionConfig{
-							DifficultyLevel: m.difficulty,
-							IncludePlural:   m.includePlural,
-							QuestionCount:   m.questionCount,
-						},
-					}
-				}
+				// Setup complete
+				m.complete = true
+				return m, tea.Quit
 			}
 
 		case "4":
 			if m.step == 2 {
 				// Endless mode
 				m.questionCount = 0
-				return m, func() tea.Msg {
-					return SessionConfigMsg{
-						Config: models.SessionConfig{
-							DifficultyLevel: m.difficulty,
-							IncludePlural:   m.includePlural,
-							QuestionCount:   m.questionCount,
-						},
-					}
-				}
+				m.complete = true
+				return m, tea.Quit
 			}
 
 		case "y", "Y":
@@ -166,6 +153,18 @@ func (m SetupModel) View() string {
 	s.WriteString(optionStyle.Render("\n[q] Quit"))
 
 	return s.String()
+}
+
+// GetConfig returns the session configuration if setup is complete
+func (m SetupModel) GetConfig() (models.SessionConfig, bool) {
+	if !m.complete {
+		return models.SessionConfig{}, false
+	}
+	return models.SessionConfig{
+		DifficultyLevel: m.difficulty,
+		IncludePlural:   m.includePlural,
+		QuestionCount:   m.questionCount,
+	}, true
 }
 
 // SessionConfigMsg is sent when setup is complete

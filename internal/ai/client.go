@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/anthropics/anthropic-sdk-go"
@@ -65,7 +66,7 @@ func NewClaudeClient() (*ClaudeClient, error) {
 
 	return &ClaudeClient{
 		client: &client,
-		model:  "claude-3-5-sonnet-20241022",
+		model:  "claude-sonnet-4-6",
 	}, nil
 }
 
@@ -91,10 +92,34 @@ func (c *ClaudeClient) callAPI(ctx context.Context, prompt string) (string, erro
 	// Get the text content from the first content block
 	contentBlock := message.Content[0]
 	if contentBlock.Type == "text" && contentBlock.Text != "" {
-		return contentBlock.Text, nil
+		return cleanJSONResponse(contentBlock.Text), nil
 	}
 
 	return "", fmt.Errorf("unexpected response type from API: %s", contentBlock.Type)
+}
+
+// cleanJSONResponse removes markdown code fences from JSON responses
+func cleanJSONResponse(text string) string {
+	// Remove leading/trailing whitespace
+	text = strings.TrimSpace(text)
+
+	// Check for markdown code fences with json language identifier
+	if strings.HasPrefix(text, "```json") {
+		text = strings.TrimPrefix(text, "```json")
+		text = strings.TrimSuffix(text, "```")
+		text = strings.TrimSpace(text)
+		return text
+	}
+
+	// Check for plain markdown code fences
+	if strings.HasPrefix(text, "```") {
+		text = strings.TrimPrefix(text, "```")
+		text = strings.TrimSuffix(text, "```")
+		text = strings.TrimSpace(text)
+		return text
+	}
+
+	return text
 }
 
 // logError logs errors to import.log file

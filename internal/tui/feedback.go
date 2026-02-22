@@ -8,7 +8,7 @@ import (
 )
 
 // RenderFeedback renders the feedback screen after an answer
-func RenderFeedback(isCorrect bool, userAnswer string, sentence *models.Sentence, explanation *models.Explanation) string {
+func RenderFeedback(isCorrect bool, userAnswer string, sentence *models.Sentence, explanation *models.Explanation, terminalWidth int) string {
 	var s strings.Builder
 
 	borderStyle := lipgloss.NewStyle().
@@ -28,8 +28,19 @@ func RenderFeedback(isCorrect bool, userAnswer string, sentence *models.Sentence
 		Foreground(lipgloss.Color("252")).
 		Bold(true)
 
+	// Calculate content width based on terminal width
+	// Account for border (2 chars), padding (4 chars), and some margin
+	contentWidth := terminalWidth - 10
+	if contentWidth < 40 {
+		contentWidth = 40 // Minimum width
+	}
+	if contentWidth > 100 {
+		contentWidth = 100 // Maximum width for readability
+	}
+
 	textStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("252"))
+		Foreground(lipgloss.Color("252")).
+		Width(contentWidth)
 
 	answerStyle := lipgloss.NewStyle().
 		Foreground(lipgloss.Color("120")).
