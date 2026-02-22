@@ -99,19 +99,19 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 2.9 Implement all Repository interface methods using prepared statements and transactions where appropriate
   - [x] 2.10 Create `internal/storage/checkpoint.go` with checkpoint CRUD functions (CreateCheckpoint, UpdateCheckpoint, GetCheckpointByFilename)
 
-- [ ] 3.0 Implement Claude API client with retry logic
-  - [ ] 3.1 Create `internal/ai/retry.go` with exponential backoff function that takes retry count and returns wait duration (1s, 2s, 4s progression)
-  - [ ] 3.2 Implement retry wrapper function that accepts an API call function and executes it with up to 3 retries on failures (429, 500, 503 status codes)
-  - [ ] 3.3 Create `internal/ai/prompts.go` with three template functions:
+- [x] 3.0 Implement Claude API client with retry logic
+  - [x] 3.1 Create `internal/ai/retry.go` with exponential backoff function that takes retry count and returns wait duration (1s, 2s, 4s progression)
+  - [x] 3.2 Implement retry wrapper function that accepts an API call function and executes it with up to 3 retries on failures (429, 500, 503 status codes)
+  - [x] 3.3 Create `internal/ai/prompts.go` with three template functions:
     - `GenerateDeclensionPrompt(greek, english, gender string) string` - returns formatted prompt for declension generation
     - `GenerateSentencesPrompt(greek, english, gender string) string` - returns formatted prompt for sentence generation
     - `GenerateExplanationPrompt(greekSentence, correctAnswer string) string` - returns formatted prompt for explanation generation
-  - [ ] 3.4 Create `internal/ai/client.go` with ClaudeClient struct containing API key and Anthropic SDK client
-  - [ ] 3.5 Implement `NewClaudeClient() (*ClaudeClient, error)` constructor that reads ANTHROPIC_API_KEY from environment and initializes SDK client
-  - [ ] 3.6 Implement `GenerateDeclensions(greek, english, gender string) (*DeclensionResponse, error)` method that calls Claude API with declension prompt, parses JSON response, and returns structured data
-  - [ ] 3.7 Implement `GenerateSentences(greek, english, gender string) ([]SentenceResponse, error)` method that calls Claude API with sentence prompt and parses JSON array response
-  - [ ] 3.8 Implement `GenerateExplanations(sentences []SentenceResponse) ([]ExplanationResponse, error)` method that generates explanations for multiple sentences in batch
-  - [ ] 3.9 Add error handling for invalid JSON responses, log errors to ~/.greekmaster/import.log
+  - [x] 3.4 Create `internal/ai/client.go` with ClaudeClient struct containing API key and Anthropic SDK client
+  - [x] 3.5 Implement `NewClaudeClient() (*ClaudeClient, error)` constructor that reads ANTHROPIC_API_KEY from environment and initializes SDK client
+  - [x] 3.6 Implement `GenerateDeclensions(greek, english, gender string) (*DeclensionResponse, error)` method that calls Claude API with declension prompt, parses JSON response, and returns structured data
+  - [x] 3.7 Implement `GenerateSentences(greek, english, gender string) ([]SentenceResponse, error)` method that calls Claude API with sentence prompt and parses JSON array response
+  - [x] 3.8 Implement `GenerateExplanations(sentences []SentenceResponse) ([]ExplanationResponse, error)` method that generates explanations for multiple sentences in batch
+  - [x] 3.9 Add error handling for invalid JSON responses, log errors to ~/.greekmaster/import.log
 
 - [ ] 4.0 Implement CSV import and AI generation orchestration
   - [ ] 4.1 Create `internal/importer/csv.go` with function to parse CSV file, validate headers (english, greek, attribute), and return slice of CSVRow structs
