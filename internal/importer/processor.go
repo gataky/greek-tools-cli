@@ -77,7 +77,6 @@ func (p *ImportProcessor) ProcessImport(csvPath string) error {
 	}
 
 	// Track statistics
-	totalSentences := 0
 	apiCalls := 0
 	startTime := time.Now()
 
@@ -122,42 +121,6 @@ func (p *ImportProcessor) ProcessImport(csvPath string) error {
 			fmt.Printf("     Skipping this noun and continuing...\n")
 			continue
 		}
-
-		// Generate sentences
-		fmt.Print("  → Generating practice sentences... ")
-		sentences, err := p.client.GenerateSentences(row.Greek, row.English, row.Gender)
-		if err != nil {
-			fmt.Printf("FAILED\n")
-			fmt.Printf("     Error: %v\n", err)
-			fmt.Printf("     Skipping sentences for this noun...\n")
-			// Continue with next noun
-			continue
-		}
-		apiCalls++
-		fmt.Printf("✓ (%d sentences)\n", len(sentences))
-
-		// Store sentences
-		fmt.Print("  → Storing in database... ")
-		for j, sentenceResp := range sentences {
-			sentence := &models.Sentence{
-				NounID:          noun.ID,
-				EnglishPrompt:   sentenceResp.EnglishPrompt,
-				GreekSentence:   sentenceResp.GreekSentence,
-				CorrectAnswer:   sentenceResp.CorrectAnswer,
-				CaseType:        sentenceResp.CaseType,
-				Number:          sentenceResp.Number,
-				DifficultyPhase: sentenceResp.DifficultyPhase,
-				ContextType:     sentenceResp.ContextType,
-				Preposition:     sentenceResp.Preposition,
-			}
-
-			if err := p.repo.CreateSentence(sentence); err != nil {
-				fmt.Printf("\n     Warning: Failed to store sentence %d: %v\n", j+1, err)
-				continue
-			}
-
-			totalSentences++
-		}
 		fmt.Println("✓")
 
 		// Update checkpoint after each noun
@@ -178,7 +141,6 @@ func (p *ImportProcessor) ProcessImport(csvPath string) error {
 	fmt.Print("\n" + strings.Repeat("=", 50) + "\n")
 	fmt.Println("Import Complete!")
 	fmt.Printf("  Nouns imported: %d\n", len(rows)-startRow)
-	fmt.Printf("  Sentences generated: %d\n", totalSentences)
 	fmt.Printf("  API calls made: %d\n", apiCalls)
 	fmt.Printf("  Time elapsed: %s\n", duration.Round(time.Second))
 	fmt.Println(strings.Repeat("=", 50))

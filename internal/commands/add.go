@@ -128,38 +128,9 @@ This command requires the ANTHROPIC_API_KEY environment variable to be set.`,
 			if err := repo.CreateNoun(noun); err != nil {
 				return fmt.Errorf("failed to store noun: %w", err)
 			}
-
-			// Generate sentences
-			fmt.Print("Generating practice sentences... ")
-			sentences, err := client.GenerateSentences(greek, english, gender)
-			if err != nil {
-				fmt.Println("FAILED")
-				return fmt.Errorf("failed to generate sentences: %w", err)
-			}
-			fmt.Printf("✓ (%d sentences)\n", len(sentences))
-
-			// Store sentences
-			fmt.Print("Storing in database... ")
-			for j, sentenceResp := range sentences {
-				sentence := &models.Sentence{
-					NounID:          noun.ID,
-					EnglishPrompt:   sentenceResp.EnglishPrompt,
-					GreekSentence:   sentenceResp.GreekSentence,
-					CorrectAnswer:   sentenceResp.CorrectAnswer,
-					CaseType:        sentenceResp.CaseType,
-					Number:          sentenceResp.Number,
-					DifficultyPhase: sentenceResp.DifficultyPhase,
-					ContextType:     sentenceResp.ContextType,
-					Preposition:     sentenceResp.Preposition,
-				}
-
-				if err := repo.CreateSentence(sentence); err != nil {
-					return fmt.Errorf("failed to store sentence %d: %w", j+1, err)
-				}
-			}
 			fmt.Println("✓")
 
-			fmt.Printf("\n✓ Successfully added '%s' with %d practice sentences\n", english, len(sentences))
+			fmt.Printf("\n✓ Successfully added '%s'\n", english)
 
 			return nil
 		},

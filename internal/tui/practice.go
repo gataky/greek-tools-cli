@@ -47,15 +47,15 @@ func NewPracticeModel(repo storage.Repository, config models.SessionConfig) (*Pr
 		numberFilter = "" // Empty means both
 	}
 
-	// Load sentences from database
+	// Generate sentences from templates
 	limit := 1000
 	if config.QuestionCount > 0 {
 		limit = config.QuestionCount * 2 // Get extra for variety
 	}
 
-	sentences, err := repo.GetRandomSentences(phase, numberFilter, limit)
+	sentences, err := repo.GeneratePracticeSentences(phase, numberFilter, limit)
 	if err != nil {
-		return nil, fmt.Errorf("failed to load sentences: %w", err)
+		return nil, fmt.Errorf("failed to generate sentences: %w", err)
 	}
 
 	if len(sentences) == 0 {
