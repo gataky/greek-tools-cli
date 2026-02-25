@@ -25,6 +25,7 @@ func init() {
 	rootCmd.AddCommand(commands.NewPracticeCmd())
 	rootCmd.AddCommand(commands.NewAddCmd())
 	rootCmd.AddCommand(commands.NewListCmd())
+	rootCmd.AddCommand(commands.NewMigrateCmd())
 }
 
 func main() {

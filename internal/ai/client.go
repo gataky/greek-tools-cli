@@ -29,17 +29,6 @@ type DeclensionResponse struct {
 	AccPlArticle string `json:"acc_pl_article"`
 }
 
-// SentenceResponse represents a single practice sentence
-type SentenceResponse struct {
-	EnglishPrompt   string  `json:"english_prompt"`
-	GreekSentence   string  `json:"greek_sentence"`
-	CorrectAnswer   string  `json:"correct_answer"`
-	CaseType        string  `json:"case_type"`
-	Number          string  `json:"number"`
-	DifficultyPhase int     `json:"difficulty_phase"`
-	ContextType     string  `json:"context_type"`
-	Preposition     *string `json:"preposition"`
-}
 
 // ClaudeClient wraps the Anthropic SDK client
 type ClaudeClient struct {
@@ -155,37 +144,6 @@ func (c *ClaudeClient) GenerateDeclensions(greek, english, gender string) (*Decl
 		}
 
 		response = &decl
-		return nil
-	}, 3) // Max 3 retries
-
-	if err != nil {
-		return nil, err
-	}
-
-	return response, nil
-}
-
-// GenerateSentences generates practice sentences for a noun
-func (c *ClaudeClient) GenerateSentences(greek, english, gender string) ([]SentenceResponse, error) {
-	prompt := GenerateSentencesPrompt(greek, english, gender)
-
-	var response []SentenceResponse
-	err := RetryWithBackoff(func() error {
-		ctx := context.Background()
-		text, err := c.callAPI(ctx, prompt)
-		if err != nil {
-			c.logError("Sentences API call failed for '%s': %v", greek, err)
-			return err
-		}
-
-		// Parse JSON response
-		var sentences []SentenceResponse
-		if err := json.Unmarshal([]byte(text), &sentences); err != nil {
-			c.logError("Failed to parse sentences JSON for '%s': %v\nResponse: %s", greek, err, text)
-			return fmt.Errorf("invalid JSON response: %w", err)
-		}
-
-		response = sentences
 		return nil
 	}, 3) // Max 3 retries
 

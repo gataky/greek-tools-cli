@@ -22,6 +22,15 @@ type Repository interface {
 	CreateSentence(sentence *models.Sentence) error
 	GetRandomSentences(phase int, number string, limit int) ([]*models.Sentence, error)
 
+	// Template operations
+	CreateTemplate(template *models.SentenceTemplate) error
+	GetTemplate(id int64) (*models.SentenceTemplate, error)
+	ListTemplates() ([]*models.SentenceTemplate, error)
+	GetRandomTemplates(phase int, number string, limit int) ([]*models.SentenceTemplate, error)
+
+	// Template-based sentence generation
+	GeneratePracticeSentences(phase int, number string, limit int) ([]*models.Sentence, error)
+
 	// Close database connection
 	Close() error
 }

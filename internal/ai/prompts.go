@@ -16,34 +16,4 @@ func GenerateDeclensionPrompt(greek, english, gender string) string {
 Return only valid JSON, no explanation.`, greek, english, gender)
 }
 
-// GenerateSentencesPrompt creates a prompt for generating practice sentences
-func GenerateSentencesPrompt(greek, english, gender string) string {
-	return fmt.Sprintf(`Generate 12 practice sentences for learning Greek cases using the noun '%s' (%s, %s). Create:
-- 3 sentences with accusative case (direct object after different transitive verbs like βλέπω, ψάχνω, θέλω)
-- 3 sentences with genitive case (possession contexts)
-- 3 sentences with accusative after prepositions (σε, από)
-- 3 sentences with genitive after preposition (για)
-
-Mix singular and plural forms. Return as JSON array with this structure:
-[{
-  "english_prompt": "I see ___ (the teacher)",
-  "greek_sentence": "Βλέπω τον δάσκαλο",
-  "correct_answer": "τον δάσκαλο",
-  "case_type": "accusative",
-  "number": "singular",
-  "difficulty_phase": 1,
-  "context_type": "direct_object",
-  "preposition": null
-}, ...]
-
-IMPORTANT: For context_type, use ONLY these exact values:
-- "direct_object" - for direct objects (transitive verbs)
-- "possession" - for genitive possession contexts
-- "preposition" - for any sentence with a preposition
-
-For case_type, use ONLY: "nominative", "genitive", or "accusative"
-For number, use ONLY: "singular" or "plural"
-
-Return only valid JSON array, no explanation.`, greek, english, gender)
-}
 
